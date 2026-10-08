@@ -228,6 +228,7 @@
     <p class="lede">Family, your local contact in Bogotá and the apartment host. The numbers are locked so they’re not public: unlock once with the passcode and they stay on this phone, even offline.</p>
     <div class="card lock" id="lockCard">
       <div id="lockedView">
+        <p id="lockNote" class="small" hidden style="color:var(--red);font-weight:700">Contacts were updated. Unlock again to get the new list.</p>
         <label for="pass"><b>Passcode</b></label>
         <input id="pass" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="xxxxx-xxxxx">
         <div class="err" id="lockErr"></div>
@@ -626,7 +627,7 @@ selectView(['o','1','2','3','4','5'].includes(store('bg_view')) ? store('bg_view
 show(['trip','explore','help'].includes(store('bg_tab')) ? store('bg_tab') : 'trip');
 
 /* ---------------- locked contacts ---------------- */
-const ENC = {"v":1,"iter":250000,"salt":"Tc0jfWxcmCeBLAOgbz8i2Q==","iv":"8qozpEivwFZ/hdYK","ct":"aEgp5dAvTAX5frv4XKFiGrmT/9uQZof5uCuwMnOeoMHiKlxFwyzy6jt0d+Uqc34OZ8M/NP10KCfLPTros1eDMum9gut+62H1cxqD2CRvddoXuR/zDQJ7UiuxL+QKjPd5hxdhFXtKZdnKOBHd83ZypXwEMVZLLq6ZjJzxlmhReRl905LBlanbQQn2QTErkzX16fHBiDQOlysu9WO5uS25GRS8wjLiYZUBKqqHMnWth/Kbg6PbY+0q8lVUFdK03Z0Tpv1EyZm50iX4JhmWHbHBXH73S3ns/+c+0XLgtuSzp0LhLhY18pRoqZd67mayCts8OShknLaV2lkOGqto2L1eDYbmX70VLyEzZ+3tpdh39QybuYZuowRI/X+bDVGvVqRw8Hx3blrD9sUBXPGDL8eBCVVp13R3ElSn7xA/44PJYIPlVbF9KrgWYBL1CUlGzg20xJiRAizhZKtVdRTgC5hJ/NkGw3mU0CeZ96xbD/E5jT/acOQoCZx55HGhOm4ExL9mpnqlUHbMrSrt2KKEJHhsCnQrvrBqMbeRdq0DMZIW/x0sQ83wRKy7l6DBvaaVhnTI6yCsBm6rmQPt9Ut3pvRDSV9wNmvuzSTjDkDmuUHLvowzuO71M3E6b6HG6ehB/x4i957D1Co+g87Rlp73F3uFwfJcnSI6e4Sxgnmiq1g="};
+const ENC = {"v":1,"rev":2,"iter":250000,"salt":"bUmD533uX5Y6CGkCdshtvQ==","iv":"hhQhWM3pCSMiiLis","ct":"dboyoslhofIiwhYfMrj5ifI+YTetis9y+A/HoLtYh/7/3Ou6yBtjfUe3MFfrNu0xb0ko7PxkPBHOroTnK62hwNI0n12OLpHDqpzpJA17PO2wxMy8bDvCy9Ie+DzTSZ7YvjxkEXUh530JtQzvzbcGuvDPY9raUP5Q1sjMLZ3b3jAq60l/FkP+eLSlts5BhtO28LHkx7xeMOJeuuAsCo6+PjuvMEtcXN9shQoHIXSsObCmoX4USENFiyOwvfu/E01bOcafafu368pdZ4nKdODrlaxLNZXNpQaoplNMz4ebfJbge2Y9JjjGYqhwZvLOjSG/qVqRaMERZZ0TL+WvX/jAYG5xoTcnJwvmWLBJsAiQvyBbR4GJ+csLVbLKcDFKf951+zGEwiegbp8qJVupFn0afeWbesLBgu3TMqvxv2WSnB+yVDe5VidUk+L9BHBDkRT47X9mMzagfi7SBtKpcbVguXTdKV8JW8Yi7E9StlAqHgajQuEyq8+2piFFk9y7hL2E1QgBhlJQkZYQASFjrCcgKWLYF46vJvYSYuXSnvWWAd29XfVs4r2a7XqLnEu1v27wA9k7nfU8dtSA7/fRif89lQH1y/BH+ptKpLufHzGcWbbNSbKKMY+Yjp5raifqDnjlp1RQn/0qMm5l4UQBDWN+O/4LlL+aAdKFJ8JJVbuBRxMrbh0LY8GElAdNSLzincDmMsOz5IP9WpFDNs4QegfOFkbIgqCnJTL8Ta2tVM7EeofL/Ph2Z2x7WiyQvkypdqXZ3TjzAzswDUVCtpBUwOrVXZvMGfSGdZbRvpml6tbEwywIUP73Y9+ErUK6fyR01I9LOMmd2Wu2841YiYpWQfqYQTmD6QfnrQpkpMYqeBaEWysZb6u4GmF4kKucUw=="};
 const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 async function decryptContacts(pass){
   if(!(window.crypto && crypto.subtle)) throw new Error('nocrypto');
@@ -657,7 +658,10 @@ function contactRow(c, removable){
   return row;
 }
 function renderContacts(){
+  const stale = store('bg_unlocked') && store('bg_unlocked_rev') !== String(ENC.rev);
+  if(stale) store('bg_unlocked', null);
   const raw = store('bg_unlocked'), open = !!raw;
+  $('#lockNote').hidden = !stale;
   $('#lockedView').hidden = open; $('#openView').hidden = !open;
   if(!open) return;
   const data = JSON.parse(raw), box = $('#ctList'); box.textContent = '';
@@ -672,7 +676,7 @@ $('#unlockBtn').addEventListener('click', async ()=>{
   btn.textContent = 'Unlocking…'; btn.disabled = true;
   try{
     const data = await decryptContacts(pass);
-    store('bg_unlocked', JSON.stringify(data)); $('#pass').value = ''; renderContacts();
+    store('bg_unlocked', JSON.stringify(data)); store('bg_unlocked_rev', String(ENC.rev)); $('#pass').value = ''; renderContacts();
   }catch(e){
     err.textContent = (e && e.message === 'nocrypto') ? 'Open this page from its https:// link (not a saved file) to unlock.' : 'That passcode didn’t work. Check it and try again.';
   }
