@@ -2,635 +2,694 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>T&amp;G Ireland Adventure</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0b1f5e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bogotá">
+<link rel="icon" href="data:,">
+<title>Bogotá Adventure</title>
 <style>
   :root{
-    --bg: #efe7d4;
-    --bg-card: #f7f1e3;
-    --ink: #23301d;
-    --ink-soft: #5a5c4e;
-    --green: #33502e;
-    --green-deep: #223a1f;
-    --gold: #b8862e;
-    --rust: #a3452a;
-    --line: #cdc2a1;
-    --line-soft: #ddd4b8;
-    --white: #fffdf7;
+    --yellow:#fcd116; --yellow-d:#c99a00; --blue:#003893; --navy:#0b1f5e; --red:#ce1126; --green:#0a8f5c;
+    --bg:#fff8e4; --card:#ffffff; --ink:#15213f; --ink2:#5b6480; --line:#ecdfb4; --soft:#f6edcf;
+    --round:ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
   }
-  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); }
-  body{
-    font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 17px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    padding-bottom: 64px;
-  }
-  h1,h2,h3{ font-family:'Fraunces', Georgia, serif; margin:0; font-weight:600; }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--round);font-size:17px;line-height:1.5;
+       padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  a{color:var(--blue)}
+  h1,h2,h3{margin:0;font-family:var(--round)}
+  section[hidden],[hidden]{display:none !important}
 
-  /* ---------- Header ---------- */
-  header{
-    background: var(--green-deep);
-    color: var(--white);
-    padding: 22px 18px 18px;
-    position: relative;
-    overflow: hidden;
-  }
-  header .map-motif{
-    position:absolute; right:-30px; top:-20px; width:190px; height:190px;
-    opacity:0.10; pointer-events:none;
-  }
-  header h1{
-    font-size: 1.7rem;
-    letter-spacing: 0.01em;
-    position: relative; z-index:1;
-  }
-  header .sub{
-    font-size: 0.92rem;
-    color: #d9d3bd;
-    margin-top: 4px;
-    position: relative; z-index:1;
-  }
+  /* ---------- header ---------- */
+  header.top{background:var(--navy);color:#fff;position:relative;overflow:hidden;
+             padding:calc(14px + env(safe-area-inset-top)) 18px 16px}
+  header.top::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(10px + env(safe-area-inset-top));
+             background:linear-gradient(to bottom,var(--yellow) 0 50%,var(--blue) 50% 75%,var(--red) 75% 100%)}
+  header.top .in{position:relative;z-index:1;padding-top:calc(8px + env(safe-area-inset-top)*0)}
+  header.top h1{font-size:1.75rem;font-weight:800;color:var(--yellow);letter-spacing:.01em;line-height:1.1;margin-top:8px}
+  header.top .sub{font-size:.92rem;color:#cdd6ff;margin-top:3px}
+  header.top svg.ridge{position:absolute;right:-6px;bottom:-2px;width:210px;opacity:.22;pointer-events:none}
 
-  /* ---------- Day pill scroller ---------- */
-  nav.days{
-    display:flex;
-    gap:8px;
-    overflow-x:auto;
-    padding: 12px 14px;
-    background: var(--green);
-    scrollbar-width:none;
-    position: sticky;
-    top:0;
-    z-index: 20;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  }
-  nav.days::-webkit-scrollbar{ display:none; }
-  nav.days button{
-    flex: 0 0 auto;
-    font-family:'Work Sans', sans-serif;
-    font-weight:600;
-    font-size: 0.92rem;
-    background: rgba(255,255,255,0.08);
-    color: #eae4cd;
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 10px;
-    padding: 10px 15px;
-    cursor:pointer;
-    white-space: nowrap;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  nav.days button.active{
-    background: var(--gold);
-    border-color: var(--gold);
-    color: #2a2005;
-  }
-  nav.days button.overview-btn{
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.35);
-  }
-  nav.days button.overview-btn.active{
-    background: var(--white);
-    color: var(--green-deep);
-    border-color: var(--white);
-  }
+  /* ---------- day pills ---------- */
+  nav.pills{position:sticky;top:0;z-index:30;background:var(--navy);display:flex;gap:8px;overflow-x:auto;
+            padding:10px 14px 12px;scrollbar-width:none;border-bottom:4px solid var(--yellow)}
+  nav.pills::-webkit-scrollbar{display:none}
+  nav.pills button{flex:0 0 auto;font:700 .95rem var(--round);color:#dfe5ff;background:rgba(255,255,255,.09);
+            border:1.5px solid rgba(255,255,255,.28);border-radius:999px;padding:9px 16px;min-height:42px;cursor:pointer;white-space:nowrap}
+  nav.pills button.on{background:var(--yellow);border-color:var(--yellow);color:var(--navy)}
 
-  main{ max-width: 640px; margin: 0 auto; padding: 18px 16px 10px; }
+  main{max-width:640px;margin:0 auto;padding:16px 14px 8px}
 
-  /* ---------- Day header block ---------- */
-  .day-head{
-    margin-bottom: 18px;
-  }
-  .day-head .kicker{
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--rust);
-    letter-spacing: 0.02em;
-  }
-  .day-head .kicker.travel{ color: var(--gold); }
-  .day-head h2{ font-size: 1.5rem; margin-top: 2px; color: var(--green-deep); }
-  .day-head .note{
-    margin-top: 8px;
-    font-size: 0.97rem;
-    color: var(--ink-soft);
-    line-height: 1.55;
-  }
+  .h{font-weight:800;font-size:1.2rem;color:var(--blue);margin:24px 2px 8px;display:flex;align-items:center;gap:8px}
+  .h:first-child{margin-top:4px}
+  .lede{font-size:.95rem;color:var(--ink2);margin:0 2px 12px}
 
-  /* ---------- Stay card ---------- */
-  .stay-card{
-    display:flex;
-    gap: 12px;
-    align-items:flex-start;
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 13px 14px;
-    margin-bottom: 20px;
-  }
-  .stay-card svg{ flex:0 0 auto; margin-top:2px; }
-  .stay-card .label{ font-size:0.78rem; font-weight:600; color:var(--ink-soft); text-transform: none; }
-  .stay-card .name{ font-family:'Fraunces', serif; font-size:1.08rem; font-weight:600; color:var(--green-deep); margin-top:1px;}
-  .stay-card .addr{ font-size:0.86rem; color:var(--ink-soft); margin-top:2px; }
-  .stay-card .maplinks{ margin-top:6px; font-size:0.84rem; }
-  .stay-card .maplinks a{ color:var(--green); font-weight:600; text-decoration:none; }
-  .stay-card .maplinks a:not(:last-child)::after{ content:"  ·  "; color: var(--line); font-weight:400; }
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin:0 0 12px}
+  .card p{margin:.4em 0}
+  .card ul{margin:.4em 0;padding-left:1.15em}
+  .card li{margin:.35em 0}
+  .small{font-size:.86rem;color:var(--ink2)}
 
-  /* ---------- Section ---------- */
-  section.block{ margin-bottom: 24px; }
-  .block-title{
-    display:flex; align-items:center; gap:8px;
-    font-size: 1.02rem;
-    font-weight: 700;
-    color: var(--green-deep);
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--line-soft);
-  }
-  .block-title svg{ flex: 0 0 auto; }
+  /* ---------- buttons ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:46px;padding:9px 16px;
+       border-radius:12px;border:2px solid var(--blue);background:#fff;color:var(--blue);
+       font:700 .95rem var(--round);text-decoration:none;cursor:pointer}
+  .btn.fill{background:var(--blue);color:#fff}
+  .btn.sun{background:var(--yellow);border-color:var(--yellow);color:var(--navy)}
+  .btn.wa{border-color:var(--green);color:#087349}
+  .btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .btnrow .btn{flex:1 1 auto}
 
-  .enroute-tag{
-    display:inline-block;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--rust);
-    background: rgba(163,69,42,0.09);
-    border: 1px solid rgba(163,69,42,0.25);
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    letter-spacing: 0.01em;
-  }
+  /* ---------- day header ---------- */
+  .dayhead{margin:2px 2px 14px}
+  .kicker{display:inline-block;font-weight:800;font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;
+          border-radius:999px;padding:3px 11px;background:var(--yellow);color:var(--navy)}
+  .kicker.travel{background:var(--red);color:#fff}
+  .kicker.open{background:var(--blue);color:#fff}
+  .dayhead h2{font-size:1.65rem;font-weight:800;color:var(--navy);margin-top:8px;line-height:1.15}
+  .dayhead .note{color:var(--ink2);margin-top:6px;font-size:.98rem}
 
-  /* ---------- Place card ---------- */
-  .place{
-    border: 1px solid var(--line);
-    border-radius: 9px;
-    padding: 13px 14px;
-    margin-bottom: 10px;
-    background: var(--white);
-  }
-  .place .pname{
-    font-family:'Fraunces', serif;
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: var(--green-deep);
-    margin-bottom: 2px;
-  }
-  .place .paddr{
-    font-size: 0.83rem;
-    color: var(--ink-soft);
-    margin-bottom: 6px;
-  }
-  .place .pdesc{
-    font-size: 0.93rem;
-    color: var(--ink);
-    line-height: 1.5;
-    margin-bottom: 8px;
-  }
-  .place .plinks{ font-size: 0.85rem; }
-  .place .plinks a{
-    color: var(--green);
-    font-weight: 600;
-    text-decoration: none;
-    margin-right: 14px;
-    display: inline-block;
-  }
-  .place .plinks a:hover{ text-decoration: underline; }
+  .stay{display:flex;gap:12px;align-items:flex-start;border-left:6px solid var(--yellow)}
+  .stay .em{font-size:1.5rem;line-height:1}
+  .stay .lbl{font-size:.76rem;font-weight:800;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em}
+  .stay .nm{font-weight:800;font-size:1.1rem;color:var(--navy)}
+  .stay .ad{font-size:.88rem;color:var(--ink2)}
+  .links{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:8px;font-size:.9rem;font-weight:700}
+  .links a{text-decoration:none;padding:6px 0}
 
-  .empty-note{
-    font-size: 0.92rem;
-    color: var(--ink-soft);
-    font-style: italic;
-    border-left: 3px solid var(--line);
-    padding-left: 10px;
-  }
+  .plan li{margin:.5em 0}
+  .tip{background:#fff3c2;border:1.5px solid #f1d878;border-radius:14px;padding:12px 14px;margin:0 0 12px}
+  .tip b.t{display:block;color:var(--navy);margin-bottom:2px}
+  .tip ul{margin:.3em 0 0;padding-left:1.15em}
+  .tip li{margin:.35em 0}
 
-  /* ---------- Overview ---------- */
-  .ov-title{ font-size: 1.5rem; color: var(--green-deep); margin-bottom: 4px; }
-  .ov-sub{ color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 18px; }
-  .timeline{ position: relative; padding-left: 22px; }
-  .timeline::before{
-    content:"";
-    position:absolute; left:6px; top:6px; bottom:6px;
-    width:2px; background: var(--line);
-  }
-  .tl-item{
-    position:relative;
-    padding-bottom: 20px;
-    cursor:pointer;
-  }
-  .tl-item:last-child{ padding-bottom:0; }
-  .tl-item::before{
-    content:"";
-    position:absolute; left:-22px; top:4px;
-    width:11px; height:11px; border-radius:50%;
-    background: var(--gold);
-    border: 2px solid var(--white);
-    box-shadow: 0 0 0 1px var(--gold);
-  }
-  .tl-item .tl-day{ font-size:0.78rem; font-weight:700; color:var(--rust); }
-  .tl-item .tl-name{ font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem; color:var(--green-deep); }
-  .tl-item .tl-loc{ font-size:0.87rem; color:var(--ink-soft); }
+  /* ---------- place cards ---------- */
+  .place{border-left:6px solid var(--blue)}
+  .place.c1{border-left-color:var(--red)}
+  .place.c2{border-left-color:var(--yellow)}
+  .place .pn{font-weight:800;font-size:1.08rem;color:var(--navy)}
+  .place .pa{font-size:.84rem;color:var(--ink2);margin:1px 0 6px}
+  .place .pd{font-size:.95rem}
 
-  footer{
-    text-align:center;
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-    padding: 26px 18px 10px;
-  }
+  .opt{font-weight:800;color:var(--red);font-size:.95rem;margin:16px 2px 6px}
 
-  @media (max-width: 380px){
-    body{ font-size: 16px; }
-    header h1{ font-size: 1.45rem; }
-  }
+  /* ---------- overview timeline ---------- */
+  .tl{position:relative;padding-left:26px;margin:4px 0 8px}
+  .tl::before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:4px;border-radius:2px;
+      background:linear-gradient(to bottom,var(--yellow),var(--blue),var(--red))}
+  .tli{position:relative;padding:2px 0 18px;cursor:pointer}
+  .tli:last-child{padding-bottom:2px}
+  .tli::before{content:"";position:absolute;left:-26px;top:5px;width:16px;height:16px;border-radius:50%;
+      background:var(--yellow);border:3px solid #fff;box-shadow:0 0 0 2px var(--yellow-d)}
+  .tli.c1::before{background:var(--blue);box-shadow:0 0 0 2px var(--blue)}
+  .tli.c2::before{background:var(--red);box-shadow:0 0 0 2px var(--red)}
+  .tli .d{font-size:.76rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.05em}
+  .tli .t{font-weight:800;font-size:1.08rem;color:var(--navy)}
+  .tli .s{font-size:.9rem;color:var(--ink2)}
+
+  /* ---------- help tab ---------- */
+  .calm{background:#e9f0ff;border-color:#c5d6ff}
+  .calm h2{font-size:1.2rem;font-weight:800;color:var(--navy)}
+  .call123{display:block;text-align:center;background:var(--blue);color:#fff;text-decoration:none;font-weight:800;
+           font-size:1.35rem;border-radius:14px;padding:13px;margin:10px 0 8px}
+  .lock input[type=text],.lock input[type=tel]{width:100%;min-height:46px;font:700 1.05rem var(--round);padding:9px 12px;
+           border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);margin:6px 0}
+  .lock .err{color:var(--red);font-weight:700;font-size:.9rem;min-height:1.2em}
+  .grp{font-weight:800;color:var(--blue);margin:14px 0 4px;font-size:1.02rem}
+  .ct{border-top:1.5px solid var(--soft);padding:10px 0}
+  .ct:first-of-type{border-top:0}
+  .ct .nm{font-weight:800}
+  .ct .nt{font-size:.85rem;color:var(--ink2)}
+  .ct .btnrow{margin-top:6px}
+  .ct .btn{min-height:42px;padding:6px 12px}
+  .linkbtn{background:none;border:0;color:var(--blue);font:700 .9rem var(--round);text-decoration:underline;padding:8px 0;cursor:pointer}
+
+  details.acc{background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin:0 0 8px;padding:0 16px}
+  details.acc summary{cursor:pointer;list-style:none;font-weight:800;color:var(--navy);padding:13px 24px 13px 0;position:relative}
+  details.acc summary::-webkit-details-marker{display:none}
+  details.acc summary::after{content:"+";position:absolute;right:0;top:9px;font-size:1.5rem;color:var(--blue);font-weight:700}
+  details.acc[open] summary::after{content:"–"}
+  details.acc .body{padding:0 0 12px}
+  details.acc .body p{margin:.4em 0}
+  details.acc .body ul{margin:.4em 0;padding-left:1.15em}
+  details.acc .body li{margin:.3em 0}
+
+  table.ph{width:100%;border-collapse:collapse;font-size:.94rem}
+  table.ph td{padding:8px 4px;border-top:1.5px solid var(--soft);vertical-align:top}
+  table.ph tr:first-child td{border-top:0}
+  table.ph td:first-child{font-weight:800;width:50%;color:var(--navy)}
+
+  /* ---------- bottom tabs ---------- */
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:2px solid var(--line);
+           display:grid;grid-template-columns:repeat(3,1fr);padding-bottom:env(safe-area-inset-bottom)}
+  nav.tabs button{background:none;border:0;border-top:4px solid transparent;padding:8px 4px;min-height:62px;display:flex;
+           flex-direction:column;align-items:center;justify-content:center;gap:2px;font:800 .75rem var(--round);color:var(--ink2);cursor:pointer}
+  nav.tabs button svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  nav.tabs button.on{color:var(--blue);border-top-color:var(--yellow)}
+
+  footer{max-width:640px;margin:2px auto 0;padding:6px 16px 22px;font-size:.8rem;color:var(--ink2);text-align:center}
 </style>
 </head>
 <body>
 
-<header>
-  <svg class="map-motif" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M100 8c14 10 28 6 38 18 9 11 6 24 16 32 12 10 8 26 2 36 8 10 14 22 8 34-5 10-18 12-20 24-2 13 10 20 4 32-6 13-24 14-30 26-5 10 2 20-8 26-12 7-26 0-36-8-9-7-8-20-18-26-11-7-24-2-32-12-7-9 0-20-8-28-9-9-22-8-26-20-4-11 6-20 2-30-4-11-18-14-16-26 2-11 16-14 20-24 4-10-4-20 4-28 8-9 22-6 30-14 7-8 4-20 14-26 8-5 18 0 26-6z" stroke="#fffdf7" stroke-width="2"/>
+<header class="top">
+  <svg class="ridge" viewBox="0 0 220 80" fill="none" stroke="#fcd116" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true">
+    <path d="M0 78 L30 52 L52 60 L84 24 L102 38 L120 8 L128 8 L136 16 L146 8 L158 28 L190 46 L220 34"/>
+    <path d="M120 8 V0 M116 3.5 H124"/>
   </svg>
-  <h1>T&amp;G Ireland Adventure</h1>
-  <div class="sub">A day-by-day companion for the West of Ireland loop</div>
+  <div class="in">
+    <h1>Bogotá Adventure</h1>
+    <div class="sub">Your day-by-day companion</div>
+  </div>
 </header>
 
-<nav class="days" id="dayNav"></nav>
+<!-- =====================================================================
+     TRIP
+     ===================================================================== -->
+<section id="tab-trip">
+  <nav class="pills" id="pills"></nav>
+  <main id="tripMain"></main>
+</section>
 
-<main id="main"></main>
-
-<footer>Safe travels &amp; good craic.</footer>
-
-<script>
-/* ---------------- ICONS ---------------- */
-const ICONS = {
-  bed: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#33502e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18v-7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7"/><path d="M2 18v2M22 18v2"/><path d="M4 11V7a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v4"/><path d="M13 11h6a1 1 0 0 1 1 1v0"/></svg>`,
-  food: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#33502e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v7a2 2 0 0 0 2 2v11M6 2a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2M10 2v11"/><path d="M18 2c-2 0-3 2-3 5v3c0 1 .5 2 2 2v10"/></svg>`,
-  compass: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#33502e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
-  car: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b8862e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a2 2 0 1 0 4 0 2 2 0 1 0-4 0M15 17a2 2 0 1 0 4 0 2 2 0 1 0-4 0"/><path d="M5 17H3v-5l2-5h12l3 5h1v5h-2M5 17h10"/></svg>`
-};
-
-/* ---------------- DATA ---------------- */
-function place(name, addr, desc, url){ return {name, addr, desc, url}; }
-
-const DAYS = [
-  {
-    num: 1, kicker: "Arrival Day", kickerClass: "",
-    title: "Landing in County Clare",
-    note: "Once the rental car's sorted, it's an easy, short drive from the airport out to Smithstown \u2014 a good first stretch of Irish road before anything more ambitious. No itinerary to rush through today \u2014 just get settled.",
-    stay: place("Balally House", "14 Ros an Oir, Smithstown, Co. Clare",
-      "A purpose-built, Georgian-style bed and breakfast.", "https://www.google.com/search?q=Balally+House+Smithstown+Clare"),
-    food: [
-      place("Brogan's Bar &amp; Restaurant", "24 O'Connell Street, Clonroad Beg, Ennis, Co. Clare",
-        "The one that keeps coming up from actual Clare residents, not just visitors passing through \u2014 the oldest family-run bar and restaurant in Ennis, old-school pub atmosphere, hearty menu, and live traditional music some nights.",
-        "https://discoverireland.ie/clare/brogans-bar-and-restaurant"),
-      place("The Cloister Restaurant &amp; Bar", "Abbey Street, Ennis, Co. Clare",
-        "Set right in the grounds of Ennis Friary \u2014 the step-up choice for a proper sit-down dinner, with a locally sourced menu and a well-regarded seafood chowder in the bar side.",
-        "https://www.hotpress.com/culture/the-cloister-22752348")
-    ],
-    sights: [
-      place("Dromore Wood Nature Reserve", "Ruan, near Ennis, Co. Clare",
-        "A 1,000-acre reserve with lakes, woodland trails, and the ruins of the 17th-century O'Brien Castle by the lake edge. Free, quiet, and essentially unknown outside of locals.",
-        "https://discoverireland.ie/clare/dromore-wood-nature-reserve-visitor-centre")
-    ],
-    enroute: null
-  },
-  {
-    num: 2, kicker: "Day 2 \u00b7 Ennis area", kickerClass: "",
-    title: "A free day around Ennis &amp; the Burren",
-    note: "Second night in the same spot \u2014 a good day to range a little further out toward the Burren without needing to pack up.",
-    stay: place("Balally House", "14 Ros an Oir, Smithstown, Co. Clare",
-      "A purpose-built, Georgian-style bed and breakfast.", "https://www.google.com/search?q=Balally+House+Smithstown+Clare"),
-    food: [
-      place("Brogan's Bar &amp; Restaurant", "24 O'Connell Street, Clonroad Beg, Ennis, Co. Clare",
-        "Worth a second visit or a first, if you skipped it yesterday \u2014 hearty comfort food and a genuinely local crowd.",
-        "https://discoverireland.ie/clare/brogans-bar-and-restaurant"),
-      place("The Cloister Restaurant &amp; Bar", "Abbey Street, Ennis, Co. Clare",
-        "The more refined option if tonight calls for a proper sit-down dinner.",
-        "https://www.hotpress.com/culture/the-cloister-22752348")
-    ],
-    sights: [
-      place("Father Ted's House (Parochial House)", "Kilnaboy, the Burren, Co. Clare",
-        "A genuinely offbeat stop for fans of the show \u2014 the real house used as the parochial house on Craggy Island, privately owned by a family who sometimes offer afternoon tea in the actual kitchen. Call ahead, it's a private home.",
-        "https://www.irelands-blue-book.ie/our-blog.html/8-things-to-do-in-clare"),
-      place("Craggaunowen \u2014 The Living Past", "Kilmurry, near Quin, Co. Clare",
-        "Ireland's original prehistoric park \u2014 reconstructed crannog dwellings, a Celtic ring fort, a 2,000-year-old oak road, and the actual leather-hulled Brendan Boat that sailed the Atlantic in the 1970s. A fraction of Bunratty's crowds.",
-        "https://www.lonelyplanet.com/ireland/quin/attractions/craggaunowen/a/poi-sig/1173700/1316652")
-    ],
-    enroute: null
-  },
-  {
-    num: 3, kicker: "Travel Day", kickerClass: "travel",
-    title: "Ennis \u2192 Killarney",
-    note: "Via the N21 \u2014 Limerick, Adare, and Newcastle West \u2014 before turning into County Kerry.",
-    stay: place("Brook Lodge", "Monsignor O'Flaherty Road, Killarney, Co. Kerry",
-      "A boutique hotel just off High Street, in the centre of Killarney.", "https://www.google.com/search?q=Brook+Lodge+Killarney"),
-    food: [], sights: [],
-    enroute: {
-      food: [
-        place("Dan Cronin's Bar &amp; Bistro", "Newcastle West, Co. Limerick",
-          "The local go-to on this drive, not a coach-tour stop \u2014 known for an All-Ireland Award-winning seafood chowder with homemade bread. Sits roughly at the halfway point, a natural place to break for lunch.",
-          "https://www.limerick.ie/discover/explore/areas-limerick/newcastle-west/newcastle-west-adults")
-      ],
-      sights: [
-        place("Curraghchase Forest Park", "Kilcornan, Co. Limerick (a few minutes off the N21, near Adare)",
-          "A 774-acre former estate turned forest park \u2014 walking trails past a lake and an old arboretum. Stays quiet even in season, unlike Adare itself, which is often congested with through-traffic. \u20ac5 per car.",
-          "https://www.limerick.ie/discover/eat-see-do/nature-wildlife/forest-parks/curraghchase-forest-park")
-      ]
-    }
-  },
-  {
-    num: 4, kicker: "Day 2 \u00b7 Killarney", kickerClass: "",
-    title: "A free day around Killarney",
-    note: "Killarney's town centre is genuinely the most touristy stop on the whole loop, so it's worth tempering expectations here \u2014 but the national park itself has quieter corners.",
-    stay: place("Brook Lodge", "Monsignor O'Flaherty Road, Killarney, Co. Kerry",
-      "A boutique hotel just off High Street, in the centre of Killarney.", "https://www.google.com/search?q=Brook+Lodge+Killarney"),
-    food: [
-      place("Mac's of Main Street", "Main Street, Killarney, Co. Kerry",
-        "The place actual locals keep pointing to instead of the more obvious options on Main Street. Family-run, more full of locals who just plain like its vibe and its food than most of what's around it.",
-        "https://www.tripadvisor.com/ShowTopic-g186591-i88-k6772680-Killarney_non_tourist_restaurants_pubs-Ireland.html")
-    ],
-    sights: [
-      place("The Black Valley", "Beyond the Gap of Dunloe, Killarney National Park, Co. Kerry",
-        "A remote valley reached by driving through the Gap of Dunloe \u2014 genuinely one of the last parts of Ireland to get electricity. Dramatically less visited than the main lake loop.",
-        "https://aboutirelandtaxitours.wetravel.com/i/699702abfda7d7817181daca")
-    ],
-    enroute: null
-  },
-  {
-    num: 5, kicker: "Travel Day", kickerClass: "travel",
-    title: "Killarney \u2192 Bantry",
-    note: "Via Kenmare and Glengarriff \u2014 one of the most scenic drives of the whole loop.",
-    stay: place("Bantry House &amp; Garden", "Seafield, Bantry, Co. Cork",
-      "An estate owned by generations of the White family since 1739, on Bantry Bay. Entrance intercom at the Gatelodge arch.", "https://www.google.com/search?q=Bantry+House+and+Garden"),
-    food: [], sights: [],
-    enroute: {
-      food: [
-        place("Packie's", "Henry Street, Kenmare, Co. Kerry",
-          "One of the two places in Kenmare that locals actually go to, not just visitors stopping through on the Ring of Kerry. Candlelit, unpretentious, built around local ingredients.",
-          "https://www.frommers.com/destinations/kenmare/restaurants/"),
-        place("Purple Heather", "Henry Street, Kenmare, Co. Kerry",
-          "The other local favorite in Kenmare \u2014 small, cozy, and simple. Good for a leisurely pint at the bar or salads and sandwiches at lunch.",
-          "https://www.frommers.com/destinations/kenmare/restaurants/"),
-        place("Manning's Emporium", "Ballylickey, Bantry, Co. Cork",
-          "A genuine West Cork institution rather than a restaurant \u2014 a farm shop and deli since 1946. Less a sit-down meal, more a great stop for local cheese, bread, and charcuterie for a casual bite, right on the way into Bantry.",
-          "https://www.discoverireland.ie/cork/restaurants-west-cork")
-      ],
-      sights: [
-        place("Ring of Beara", "Beara Peninsula, starting near Kenmare",
-          "The wilder, much quieter alternative to the Ring of Kerry \u2014 same category of rugged coastline and waterfalls, a fraction of the tour-bus traffic. An easy detour since you're already routing near Kenmare.",
-          "https://www.irelandbeforeyoudie.com/?p=104074"),
-        place("Derreen Garden", "Lauragh, near Kenmare (on the Beara Peninsula)",
-          "Sub-tropical gardens built up over generations by an Edwardian family, boosted by the Gulf Stream's mild climate. The kind of garden even avid garden-visitors often haven't heard of, and it stays peaceful even in high season.",
-          "https://www.ireland-guide.com/towns/kenmare.749.html")
-      ]
-    }
-  },
-  {
-    num: 6, kicker: "Day 2 \u00b7 Bantry", kickerClass: "",
-    title: "A free day around Bantry &amp; West Cork",
-    note: "This is the strongest food region of the whole trip \u2014 worth lingering.",
-    stay: place("Bantry House &amp; Garden", "Seafield, Bantry, Co. Cork",
-      "An estate owned by generations of the White family since 1739, on Bantry Bay. Entrance intercom at the Gatelodge arch.", "https://www.google.com/search?q=Bantry+House+and+Garden"),
-    food: [
-      place("Fish Kitchen", "The Maritime Hotel, New Street, Bantry, Co. Cork",
-        "Repeatedly called out by actual Bantry locals, not just reviewers passing through \u2014 emphasis on fresh local seafood. The chowder and crab sandwich are the standouts, and it's reasonably priced for the quality.",
-        "https://wanderlog.com/place/details/489434/fish-kitchen"),
-      place("Blairscove Restaurant", "Blairscove, Durrus Road, Bantry, Co. Cork",
-        "A short drive outside Bantry proper, which is part of why it isn't overrun \u2014 set in a converted barn, known for Irish meat grilled on an open fire and an impressive 'help yourself' starter display. A genuine destination restaurant; reservations essential.",
-        "https://www.blairscove.ie")
-    ],
-    sights: [
-      place("Gougane Barra", "Gougane Barra Forest Park, near Bantry, Co. Cork",
-        "One of West Cork's most atmospheric, least crowded spots \u2014 a tiny stone oratory on an island in a still lake, ringed by forested hills, marking where St. Finbarr lived in the 6th century. Free; small parking fee to drive into the forest park.",
-        "http://gouganebarra.com"),
-      place("Sheep's Head Way", "Loop drive/walk starting outside Bantry, Co. Cork",
-        "A scenic peninsula loop \u2014 the 'Goat's Path' out to Kilcrohane, back via Ahakista and Durrus \u2014 with sea views on both sides and essentially none of the Ring of Kerry crowds. Drivable in an afternoon, or walk sections of it.",
-        "https://www.irelands-hidden-gems.com/Sheeps-Head.html")
-    ],
-    enroute: null
-  },
-  {
-    num: 7, kicker: "Travel Day", kickerClass: "travel",
-    title: "Bantry \u2192 Cahir",
-    note: "Mostly N71/N8-M8 motorway through Cork and Mitchelstown \u2014 the one leg without a specific local food find worth vouching for. Honest gap rather than a manufactured recommendation.",
-    stay: place("Cahir House", "The Square, Cahir, Co. Tipperary",
-      "A historic 18th-century manor house on the main square, overlooking the River Suir and Cahir Castle.", "https://www.google.com/search?q=Cahir+House+Hotel"),
-    food: [], sights: [],
-    enroute: {
-      food: [],
-      sights: [
-        place("Glen of Aherlow &amp; the Vee Gap", "Between the Galtee Mountains and Slievenamuck, near Bansha, Co. Tipperary",
-          "National Geographic recently called this valley one of Ireland's most overlooked destinations \u2014 'true Ireland,' largely undeveloped for tourism. The Vee Gap road through the Knockmealdown Mountains (via Clogheen) is a genuinely scenic alternative to the motorway, with dramatic views and almost no traffic.",
-          "https://www.irishcentral.com/travel/glen-of-aherlow-tipperary")
-      ]
-    }
-  },
-  {
-    num: 8, kicker: "Day 2 \u00b7 Cahir", kickerClass: "",
-    title: "A free day around Cahir",
-    note: "A compact, walkable market town \u2014 easy to explore on foot with the castle as the anchor.",
-    stay: place("Cahir House", "The Square, Cahir, Co. Tipperary",
-      "A historic 18th-century manor house on the main square, overlooking the River Suir and Cahir Castle.", "https://www.google.com/search?q=Cahir+House+Hotel"),
-    food: [
-      place("The Galtee Inn (Malone's)", "The Square, Townparks, Cahir, Co. Tipperary",
-        "The clear local favorite \u2014 a third-generation, family-run pub known across Tipperary for its steaks and for pouring a great pint. Aimed at Tipperary regulars rather than the castle-visitor crowd.",
-        "https://discoverireland.ie/tipperary/the-galtee-inn"),
-      place("The Gatehouse", "Castle Street, Cahir, Co. Tipperary",
-        "Directly across from Cahir Castle, so it does pull real tourist traffic from the location \u2014 but it's also a genuine local pub, known for arguably the best pint of Guinness in Tipperary.",
-        "https://www.travelextra.ie/?p=110286")
-    ],
-    sights: [
-      place("Farney Castle", "Holycross, Co. Tipperary (about 30 min from Cahir)",
-        "A 15th-century tower house that's still actually inhabited \u2014 one of the last lived-in tower houses in Ireland \u2014 now home to a small, family-run knitwear studio. A quieter, more personal alternative to Cahir Castle. Privately run; call ahead.",
-        "https://www.travelextra.ie/?p=103014")
-    ],
-    enroute: null
-  },
-  {
-    num: 9, kicker: "Travel Day", kickerClass: "travel",
-    title: "Cahir \u2192 Carrygerry",
-    note: "Via Cashel, Tipperary town, and Limerick \u2014 the last full driving day of the loop.",
-    stay: place("Carrygerry Country House", "Newmarket-on-Fergus, Co. Clare",
-      "A true country house originally built in 1793, overlooking the River Shannon. A hidden gem 10 minutes from Shannon Airport, with award-winning local cuisine by chef-proprietor Niall Ennis.", "https://www.google.com/search?q=Carrygerry+Country+House"),
-    food: [
-      place("The Conservatory Restaurant (at Carrygerry)", "Carrygerry Country House, Newmarket-on-Fergus, Co. Clare",
-        "No need to go anywhere else \u2014 it's Carrygerry's own award-winning, locally sourced restaurant, known especially for its creamy seafood chowder and p\u00e2t\u00e9s. Open Thursday through Saturday evenings.",
-        "https://visitclare.ie/?p=12074"),
-      place("Shannigan's Gastro Pub", "The Inn at Dromoland, Newmarket-on-Fergus, Co. Clare",
-        "A well-regarded nearby alternative if tonight calls for a change of scene \u2014 ethically produced, sustainable Irish ingredients with a seasonal menu. More polished hotel dining than a local dive, but genuinely good.",
-        "https://visitclare.ie/?p=7206")
-    ],
-    sights: [],
-    enroute: {
-      food: [
-        place("The Locke Bar", "3 George's Quay, Limerick",
-          "A proper Limerick city riverside pub, right on the Shannon \u2014 known for a solid carvery lunch and a generous full Irish. Worth an actual stop rather than a bypass if the drive routes through Limerick city.",
-          "https://www.irelandbeforeyoudie.com/?p=19571"),
-        place("Hunt Museum Caf\u00e9", "The Hunt Museum, The Custom House, Rutland Street, Limerick",
-          "A lighter, quieter option \u2014 the caf\u00e9 sits inside the museum with a terrace over the Shannon and Curragower Falls. Good for a scenic break rather than a heavier sit-down meal.",
-          "https://www.limerick.ie/discover/eat-see-do/food-drink/cafes/hunt-cafe")
-      ],
-      sights: [
-        place("Hore Abbey", "750m west of the Rock of Cashel, Cashel, Co. Tipperary",
-          "If the drive passes Cashel, this is the one worth the short detour over the Rock of Cashel itself, which draws heavy coach traffic. A 13th-century monastery ruin in a cow pasture just below the Rock \u2014 free, unguided, essentially undiscovered by comparison. Reachable by a short walk through open fields; can be muddy after rain.",
-          "https://www.travelextra.ie/?p=85309")
-      ]
-    }
-  },
-  {
-    num: 10, kicker: "Departure Day", kickerClass: "",
-    title: "Last morning near Shannon",
-    note: "No rush this morning \u2014 just the rental car return and the flight home from here. If there's a spare hour before heading to the airport, one easy last stop close by:",
-    stay: place("Carrygerry Country House", "Newmarket-on-Fergus, Co. Clare",
-      "A true country house originally built in 1793, overlooking the River Shannon.", "https://www.google.com/search?q=Carrygerry+Country+House"),
-    food: [],
-    sights: [
-      place("Mooghaun Hillfort", "Near Newmarket-on-Fergus, Co. Clare",
-        "One of the largest Bronze Age hillforts in Europe, and the site of a major gold hoard discovered in the 1800s. Essentially unsignposted and unvisited \u2014 a good, quiet walk to close out the trip, and only minutes from Carrygerry.",
-        "https://www.discoverireland.ie/newmarket-on-fergus")
-    ],
-    enroute: null
-  }
-];
-
-/* ---------------- RENDER ---------------- */
-function gmaps(q){ return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q); }
-function amaps(q){ return "https://maps.apple.com/?q=" + encodeURIComponent(q); }
-
-function placeCard(p){
-  return `
-  <div class="place">
-    <div class="pname">${p.name}</div>
-    <div class="paddr">${p.addr}</div>
-    <div class="pdesc">${p.desc}</div>
-    <div class="plinks">
-      <a href="${gmaps(p.addr)}" target="_blank" rel="noopener">Google Maps</a>
-      <a href="${amaps(p.addr)}" target="_blank" rel="noopener">Apple Maps</a>
-      <a href="${p.url}" target="_blank" rel="noopener">More info</a>
+<!-- =====================================================================
+     EXPLORE
+     ===================================================================== -->
+<section id="tab-explore" hidden>
+  <main>
+    <p class="lede" style="margin-top:2px">Everything from the day pages in one place. Hours change (especially on holidays), so check the link before you head out.</p>
+    <h2 class="h">🍽️ Eat &amp; drink</h2>
+    <div id="exFood"></div>
+    <div class="card">
+      <div class="pn" style="font-weight:800;color:var(--navy)">Order these</div>
+      <p style="margin:.3em 0 0;font-size:.95rem"><b>Ajiaco santafereño</b> (Bogotá’s chicken-and-potato soup) · <b>tamal</b> · <b>changua</b> (breakfast milk-and-egg soup) · <b>arepa con queso</b> · <b>pan de bono</b> · <b>empanadas</b> · <b>chocolate santafereño</b> (hot chocolate with cheese) · fresh juices: <b>lulo, mora, maracuyá, guanábana</b>.</p>
     </div>
-  </div>`;
-}
-
-function renderDay(d){
-  const kickerClass = d.kickerClass === "travel" ? "kicker travel" : "kicker";
-  let html = `
-    <div class="day-head">
-      <div class="${kickerClass}">${d.kicker}</div>
-      <h2>${d.title}</h2>
-      <div class="note">${d.note}</div>
+    <h2 class="h">🧭 See &amp; do</h2>
+    <div id="exSights"></div>
+    <h2 class="h">🚶 Where to wander</h2>
+    <div class="card"><p><b>Chapinero / Zona G, Parque 93 and Usaquén</b> are the neighborhoods where a daytime stroll and an early dinner feel easiest for visitors. Ask reception at the apartment which blocks they’d walk.</p></div>
+    <h2 class="h">🙅 Maybe skip</h2>
+    <div class="card">
+      <ul>
+        <li>Walking up Monserrate (steep at altitude). The funicular and cable car are the fun way.</li>
+        <li>La Candelaria after dark, and the hillside streets above it.</li>
+        <li>Street-hailed taxis, rides offered by strangers, and “guides” who approach you.</li>
+        <li>Street emerald sellers and money changers.</li>
+        <li>Marches and demonstrations. If a crowd is forming, just change direction.</li>
+      </ul>
     </div>
-    <div class="stay-card">
-      ${ICONS.bed}
-      <div>
-        <div class="label">Staying at</div>
-        <div class="name">${d.stay.name}</div>
-        <div class="addr">${d.stay.addr}</div>
-        <div class="maplinks">
-          <a href="${gmaps(d.stay.addr)}" target="_blank" rel="noopener">Google Maps</a>
-          <a href="${amaps(d.stay.addr)}" target="_blank" rel="noopener">Apple Maps</a>
-        </div>
+  </main>
+</section>
+
+<!-- =====================================================================
+     HELP (calm)
+     ===================================================================== -->
+<section id="tab-help" hidden>
+  <main>
+    <h2 class="h">Handy numbers &amp; info</h2>
+    <p class="lede">Hopefully you’ll never need this page. It’s here so everything useful is in one place.</p>
+
+    <div class="card calm">
+      <h2>Need a hand? 123</h2>
+      <p>123 reaches police, ambulance and fire anywhere in Colombia. Say <b>“Emergencia”</b>, then the address or the nearest landmark.</p>
+      <a class="call123" href="tel:123">Call 123</a>
+      <div class="btnrow">
+        <a class="btn" href="tel:132">Red Cross ambulance · 132</a>
+        <a class="btn" href="tel:+576012752000">US Embassy · +57 601 275 2000</a>
+        <a class="btn" href="tel:+576012754021">Embassy after-hours · +57 601 275 4021</a>
+      </div>
+      <p class="small" style="margin-top:10px">From the US, 24/7: State Dept. Overseas Citizens Services +1 888 407 4747 or +1 202 501 4444. Embassy numbers are from State Dept. listings; confirm anytime at <a href="https://co.usembassy.gov/" target="_blank" rel="noopener">co.usembassy.gov</a>.</p>
+    </div>
+
+    <h2 class="h">Your people</h2>
+    <p class="lede">Family, your local contact in Bogotá and the apartment host. The numbers are locked so they’re not public: unlock once with the passcode and they stay on this phone, even offline.</p>
+    <div class="card lock" id="lockCard">
+      <div id="lockedView">
+        <label for="pass"><b>Passcode</b></label>
+        <input id="pass" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="xxxxx-xxxxx">
+        <div class="err" id="lockErr"></div>
+        <div class="btnrow"><button class="btn fill" id="unlockBtn" type="button">Unlock contacts</button></div>
+        <p class="small" style="margin-top:10px">Tip: after unlocking, favorite your top few numbers in your phone’s Contacts too.</p>
+      </div>
+      <div id="openView" hidden>
+        <div id="ctList"></div>
+        <div class="grp">Add your own</div>
+        <input id="addName" type="text" placeholder="Name" autocomplete="off">
+        <input id="addTel" type="tel" placeholder="Number with country code, e.g. +57 …" autocomplete="off">
+        <div class="btnrow"><button class="btn" id="addBtn" type="button">Add contact</button></div>
+        <p class="small">Contacts you add stay on this phone only.</p>
+        <button class="linkbtn" id="forgetBtn" type="button">Lock &amp; forget on this phone</button>
       </div>
     </div>
-  `;
 
-  if(d.enroute){
-    if(d.enroute.food.length){
-      html += `<section class="block">
-        <div class="block-title">${ICONS.food} Food along the way</div>
-        <span class="enroute-tag">En route</span>
-        ${d.enroute.food.map(placeCard).join("")}
-      </section>`;
-    }
-    if(d.enroute.sights.length){
-      html += `<section class="block">
-        <div class="block-title">${ICONS.compass} Sights along the way</div>
-        <span class="enroute-tag">En route</span>
-        ${d.enroute.sights.map(placeCard).join("")}
-      </section>`;
-    }
-  }
+    <h2 class="h">If plans go sideways</h2>
+    <p class="lede">Quick reads. Tap to open.</p>
 
-  if(d.food.length){
-    html += `<section class="block">
-      <div class="block-title">${ICONS.food} Food picks</div>
-      ${d.food.map(placeCard).join("")}
-    </section>`;
-  }
-  if(d.sights.length){
-    html += `<section class="block">
-      <div class="block-title">${ICONS.compass} Hidden gems &amp; sights</div>
-      ${d.sights.map(placeCard).join("")}
-    </section>`;
-  }
-  if(!d.food.length && !d.sights.length && !(d.enroute && (d.enroute.food.length || d.enroute.sights.length))){
-    html += `<p class="empty-note">Nothing else lined up \u2014 an open, unplanned stretch.</p>`;
-  }
+    <details class="acc"><summary>Something feels off</summary><div class="body">
+      <ul>
+        <li>Trust that feeling. Leave first, explain later. You never owe anyone politeness.</li>
+        <li>Step into the nearest busy, well-lit place (hotel lobby, pharmacy, café, mall) and ask staff to stay near you.</li>
+        <li>Order a ride from inside, and let someone at home know where you are.</li>
+      </ul>
+    </div></details>
 
-  document.getElementById("main").innerHTML = html;
-}
+    <details class="acc"><summary>Phone or bag taken</summary><div class="body">
+      <ul>
+        <li>Hand it over. Not worth chasing or arguing.</li>
+        <li>Get somewhere comfortable, then use your friend’s phone to tell home you’re fine.</li>
+        <li>Later: lock or erase the phone remotely, freeze cards, and file a police report (you’ll need it for insurance).</li>
+      </ul>
+    </div></details>
 
-function renderOverview(){
-  let html = `
-    <h2 class="ov-title">Trip overview</h2>
-    <div class="ov-sub">Tap a day to jump straight to it.</div>
-    <div class="timeline">
-      ${DAYS.map(d => `
-        <div class="tl-item" data-day="${d.num}">
-          <div class="tl-day">${d.kicker}</div>
-          <div class="tl-name">${d.stay.name}</div>
-          <div class="tl-loc">${d.stay.addr.split(",").slice(-2).join(",").trim()}</div>
-        </div>
-      `).join("")}
+    <details class="acc"><summary>You get separated</summary><div class="body">
+      <ul>
+        <li>Stay put in a safe public place rather than wandering to look for each other.</li>
+        <li>Message on WhatsApp and share your live location.</li>
+        <li>Meet at the apartment or a landmark you can both name.</li>
+        <li>No contact after 20–30 minutes? Call a local contact.</li>
+      </ul>
+    </div></details>
+
+    <details class="acc"><summary>A worrying call about one of you</summary><div class="body">
+      <p>If someone calls claiming one of you is hurt or in trouble, it’s almost always a scam that targets US families.</p>
+      <ul>
+        <li>Hang up, and don’t send money.</li>
+        <li>Check with each other directly on WhatsApp or text.</li>
+        <li>Use your family code word. A real caller won’t know it.</li>
+      </ul>
+    </div></details>
+
+    <details class="acc"><summary>Feeling unwell</summary><div class="body">
+      <p><b>Altitude:</b> Bogotá is about 2,640 m (8,660 ft) and Monserrate is higher. A headache, tiredness or mild queasiness in the first day or two is common. Sit down, drink water, slow the pace and skip steep walks.</p>
+      <p><b>Head to a hospital (or call 123)</b> for confusion, a severe headache, trouble breathing at rest, repeated vomiting, chest pain or fainting.</p>
+      <p>If someone suddenly feels woozy or foggy after accepting food or a drink from someone they just met, treat it as urgent: stay together, get to staff or a public place, and call 123.</p>
+    </div></details>
+
+    <details class="acc"><summary>A ride doesn’t feel right</summary><div class="body">
+      <ul>
+        <li>Don’t get in if the plate, car or driver doesn’t match the app.</li>
+        <li>Already in? Ask to stop somewhere busy, step out, and share your trip in the app.</li>
+        <li>Skip rides offered on the street or at the airport.</li>
+      </ul>
+    </div></details>
+
+    <details class="acc"><summary>Passport trouble</summary><div class="body">
+      <ul>
+        <li>File a police report (denuncia) and keep a copy.</li>
+        <li>Call the US Embassy and say you need an emergency passport.</li>
+        <li>A photo of the passport page on your phone speeds things up.</li>
+      </ul>
+    </div></details>
+
+    <h2 class="h">🏥 Hospitals near the apartment</h2>
+    <p class="lede">Large private clinics with 24-hour emergency rooms. Bring travel-insurance details and a credit card.</p>
+    <div id="hospitals"></div>
+
+    <h2 class="h">🧳 Our travel rules</h2>
+    <div class="card">
+      <ul>
+        <li>Stay together at all times.</li>
+        <li>Avoid walking at night, and avoid isolated streets and areas.</li>
+        <li>Use planned transportation (Uber) rather than taxis.</li>
+        <li>Keep phones charged.</li>
+        <li>Keep passports and important documents secure.</li>
+        <li>Carry only the cash you need, and don’t flash jewelry, watches or electronics.</li>
+        <li>Keep bags and purses closed and in front of you in crowds.</li>
+        <li>Stay aware of your surroundings.</li>
+        <li>Don’t accept food or drinks from strangers.</li>
+        <li>No alcohol, especially in an unfamiliar country.</li>
+        <li>If a situation feels wrong, leave right away rather than worrying about being polite.</li>
+      </ul>
     </div>
-  `;
-  document.getElementById("main").innerHTML = html;
-  document.querySelectorAll(".tl-item").forEach(el => {
-    el.addEventListener("click", () => selectDay(parseInt(el.dataset.day)));
-  });
+
+    <h2 class="h">🌆 Bogotá street smarts</h2>
+    <div class="card">
+      <ul>
+        <li><b>“No dar papaya.”</b> The local saying for not making yourself an easy target. Phone-snatching (often by passing motorbikes) is the classic one: take your phone out briefly, away from the curb, ideally in a doorway.</li>
+        <li>Use ATMs only inside malls or banks.</li>
+        <li>La Candelaria is lovely by day. Head out before dark.</li>
+        <li>Be wary of anyone unusually friendly who offers to show you around, sells emeralds on the street or wants to exchange money.</li>
+        <li>If there’s a march or demonstration, steer clear and re-route.</li>
+        <li>Lock the apartment door, and call reception before opening it to someone unexpected.</li>
+        <li>Sealed bottles and busy sit-down places over street food. Bogotá tap water is generally considered safe, but bottled is fine.</li>
+      </ul>
+    </div>
+
+    <h2 class="h">🗣️ Say it in Spanish</h2>
+    <div class="card">
+      <table class="ph">
+        <tr><td>Necesito ayuda.</td><td>I need help.</td></tr>
+        <tr><td>Es una emergencia.</td><td>It’s an emergency.</td></tr>
+        <tr><td>Llame a la policía.</td><td>Call the police.</td></tr>
+        <tr><td>Necesito un médico / una ambulancia.</td><td>I need a doctor / an ambulance.</td></tr>
+        <tr><td>Me siento mal. Estoy mareada/o.</td><td>I feel sick. I’m dizzy.</td></tr>
+        <tr><td>Estoy perdida/o.</td><td>I’m lost.</td></tr>
+        <tr><td>Déjeme en paz.</td><td>Leave me alone.</td></tr>
+        <tr><td>Me robaron el pasaporte.</td><td>My passport was stolen.</td></tr>
+        <tr><td>¿Me puede ayudar a llamar un carro?</td><td>Can you help me call a car?</td></tr>
+        <tr><td>¿Ya incluye la propina?</td><td>Is the tip already included?</td></tr>
+        <tr><td>La cuenta, por favor.</td><td>The check, please.</td></tr>
+      </table>
+    </div>
+  </main>
+</section>
+
+<footer>Check hours and conditions on the day. 💛💙❤️</footer>
+
+<nav class="tabs" role="tablist">
+  <button id="btn-trip" role="tab" data-tab="trip">
+    <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M9 14.5l2 2 4-4"/></svg>Trip
+  </button>
+  <button id="btn-explore" role="tab" data-tab="explore">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z"/></svg>Explore
+  </button>
+  <button id="btn-help" role="tab" data-tab="help">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/><path d="M5.6 5.6l3.9 3.9M14.5 14.5l3.9 3.9M18.4 5.6l-3.9 3.9M9.5 14.5l-3.9 3.9"/></svg>Help
+  </button>
+</nav>
+
+<script>
+/* ---------------- helpers ---------------- */
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const am = q => 'https://maps.apple.com/?q=' + encodeURIComponent(q);
+function store(k, v){ try{ if(v===undefined) return localStorage.getItem(k); if(v===null) localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){ return null; } }
+function el(tag, props, kids){
+  const n = document.createElement(tag);
+  Object.entries(props||{}).forEach(([k,v])=>{ if(k==='text') n.textContent=v; else if(k==='class') n.className=v; else n.setAttribute(k,v); });
+  (kids||[]).forEach(c => n.appendChild(c));
+  return n;
+}
+function linkRow(q, info){
+  const d = el('div', {class:'links'});
+  d.appendChild(el('a', {href:am(q), target:'_blank', rel:'noopener', text:'📍 Apple Maps'}));
+  if(info) d.appendChild(el('a', {href:info, target:'_blank', rel:'noopener', text:'More info'}));
+  return d;
 }
 
-function buildNav(){
-  const nav = document.getElementById("dayNav");
-  let html = `<button class="overview-btn" data-target="overview">Overview</button>`;
-  DAYS.forEach(d => {
-    html += `<button data-target="${d.num}">${d.num}</button>`;
+/* ---------------- places ---------------- */
+const P = {
+  concordia:{ name:'La Concordia market & Galería Santa Fe', area:'Calle 12C #1-40, La Candelaria · on your Day 2 plan',
+    q:'Plaza de Mercado La Concordia, Calle 12C #1-40, Bogotá',
+    info:'https://bogota.gov.co/mi-ciudad/turismo/plaza-de-mercado-la-concordia-recibe-sello-de-calidad-turistico',
+    why:'A 1930s market hall that doubles as a local lunch spot: around eight little restaurants serving Bogotá staples (try the ajiaco), plus a small public art gallery inside. Daytime only, and go door-to-door by ride.' },
+  monserrate:{ name:'Monserrate', area:'Cerro de Monserrate, 3,152 m · on your Day 2 plan',
+    q:'Cerro de Monserrate, Bogotá', info:'https://monserrate.co',
+    why:'The mountain above the city, with a church, viewpoints and restaurants at the top. Ride the funicular or cable car both ways, go in daylight, bring a jacket, and take it slow at that altitude. Sunday and holiday hours differ, so check the official site.' },
+  gold:{ name:'Gold Museum (Museo del Oro)', area:'Carrera 6 #15-88, downtown',
+    q:'Museo del Oro, Carrera 6 #15-88, Bogotá', info:'https://www.banrepcultural.org/bogota/museo-del-oro',
+    why:'One of the world’s great collections of pre-Hispanic gold, with tens of thousands of pieces. Open Tuesday to Sunday, closed Mondays (holidays too). Inexpensive, free on Sundays, and online booking may be required. Allow about two hours.' },
+  botero:{ name:'Botero Museum', area:'Calle 11 #4-41, La Candelaria',
+    q:'Museo Botero, Calle 11 #4-41, Bogotá', info:'https://www.banrepcultural.org/bogota/museo-botero',
+    why:'Free. Fernando Botero’s famously rounded figures plus a strong international collection, just a few blocks from the Gold Museum.' },
+  puerta:{ name:'La Puerta Falsa', area:'Calle 11 #6-50, La Candelaria (by Plaza de Bolívar)',
+    q:'La Puerta Falsa, Calle 11 #6-50, Bogotá',
+    why:'A tiny, famously old café (since 1816) for tamal santafereño and hot chocolate with cheese and bread, a true Bogotá ritual. A quick, fun stop that pairs well with the museums.' },
+  paloquemao:{ name:'Paloquemao market', area:'Central Bogotá · go in the morning',
+    q:'Plaza de Mercado Paloquemao, Bogotá',
+    info:'https://bogota.gov.co/mi-ciudad/cultura-recreacion-y-deporte/planes-en-bogota-con-10-lugares-para-visitar-agosto-2024',
+    why:'The city’s big fresh-food market: fruit you may never have seen (lulo, granadilla, curuba, uchuva), vendors who let you taste, and a flower hall. It winds down by early afternoon, so go in the morning.' },
+  usaquen:{ name:'Usaquén', area:'North Bogotá · best on a Sunday',
+    q:'Plaza de Usaquén, Bogotá',
+    info:'https://bogota.gov.co/mi-ciudad/cultura-recreacion-y-deporte/planes-en-bogota-con-10-lugares-para-visitar-agosto-2024',
+    why:'A colonial-style village inside the city: cafés, restaurants and a Sunday flea market with artisan goods and snacks. Pairs perfectly with the Ciclovía.' },
+  coffee:{ name:'Specialty coffee', area:'Chapinero, Quinta Camacho or Usaquén',
+    q:'specialty coffee Chapinero Bogotá',
+    why:'Colombian coffee is the souvenir to bring home. Look for cafés that name the farm or region of their beans (many roast in-house) and grab a whole-bean bag. Check hours before you go.' },
+  ciclovia:{ name:'Ciclovía', area:'Main avenues citywide · Sundays and public holidays, 7 AM to 2 PM',
+    q:'Ciclovía Carrera 7 Bogotá',
+    info:'https://bogota.gov.co/mi-ciudad/cultura-recreacion-y-deporte/horarios-y-rutas-de-la-ciclovia-bogotana-los-domingos-y-festivos',
+    why:'Over 120 km of roads close to cars and fill with walkers, cyclists and skaters. Walk a stretch or rent bikes. Stay with the crowd on the main avenues, and wear a helmet if you ride.' },
+  zipa:{ name:'Zipaquirá Salt Cathedral', area:'Zipaquirá, about an hour north of Bogotá · half- or full-day trip',
+    q:'Catedral de Sal de Zipaquirá',
+    why:'An underground church carved inside a working salt mine. Go with a well-reviewed guided tour (or one your host recommends) rather than a private ride from a stranger, and be back well before dark.' },
+  street:{ name:'Street-art walking tour', area:'La Candelaria · daytime group tour',
+    q:'Bogotá graffiti tour La Candelaria',
+    why:'Bogotá’s murals are some of the best in Latin America. Join a daytime group tour with a well-reviewed guide (many are tip-based) and confirm the start time and meeting point.' },
+  jardin:{ name:'Jardín Botánico', area:'West Bogotá',
+    q:'Jardín Botánico José Celestino Mutis, Bogotá',
+    why:'A calm, green daytime option with Andean plants and greenhouses. Check hours before you go.' },
+  nacional:{ name:'National Museum', area:'Carrera 7 #28-66',
+    q:'Museo Nacional de Colombia, Carrera 7 #28-66, Bogotá',
+    info:'https://newsroom.rcnradio.com/actualidad/entrada-gratis-a-museos-de-bogota-en-2026-cuales-son',
+    why:'Colombia’s oldest museum, in a former prison. Open Tuesday to Sunday.' }
+};
+const HOSP = [
+  { name:'Clínica del Country', area:'Carrera 16 #82-57, Bogotá (Chapinero Alto)',
+    q:'Clínica del Country, Carrera 16 #82-57, Bogotá',
+    why:'Large private hospital with a 24-hour emergency room, and the closer of the two to the apartment (a few kilometers).' },
+  { name:'Fundación Santa Fe de Bogotá', area:'Carrera 7 #117-15, Bogotá (north)',
+    q:'Fundación Santa Fe de Bogotá, Carrera 7 #117-15, Bogotá',
+    why:'Major university hospital with 24-hour emergency care. Farther north, near Usaquén.' }
+];
+function placeCard(p, i){
+  return el('div', {class:'card place c'+(i%3)}, [
+    el('div', {class:'pn', text:p.name}), el('div', {class:'pa', text:p.area}),
+    el('div', {class:'pd', text:p.why}), linkRow(p.q, p.info)
+  ]);
+}
+
+/* ---------------- stay ---------------- */
+const STAY = { name:'Alma 72', addr:'Av. Carrera 24 #71A-85, Bogotá (Alcázares, near Calle 72)',
+  q:'Alma 72, Av. Carrera 24 #71A-85, Bogotá, Colombia', url:'https://jalo.com.co/alquileres/alma-72/' };
+
+function stayCard(full){
+  const box = el('div', {class:'card stay'});
+  box.appendChild(el('div', {class:'em', text:'🏠'}));
+  const body = el('div', {});
+  body.appendChild(el('div', {class:'lbl', text:'Home base'}));
+  body.appendChild(el('div', {class:'nm', text:STAY.name}));
+  body.appendChild(el('div', {class:'ad', text:STAY.addr}));
+  if(full){
+    body.appendChild(el('div', {class:'ad', style:'margin-top:6px', text:'An apartment-style building about 30 minutes from the airport, with 24/7 reception and security per the building’s listing.'}));
+  }
+  const links = el('div', {class:'links'});
+  links.appendChild(el('a', {href:am(STAY.q), target:'_blank', rel:'noopener', text:'📍 Apple Maps'}));
+  if(full) links.appendChild(el('a', {href:STAY.url, target:'_blank', rel:'noopener', text:'Building page'}));
+  body.appendChild(links);
+  const cp = el('button', {class:'btn sun', type:'button', style:'margin-top:8px;min-height:42px', text:'Copy address for Uber'});
+  cp.addEventListener('click', async ()=>{
+    const text = 'Alma 72, ' + STAY.addr;
+    try{ await navigator.clipboard.writeText(text); }
+    catch(e){ const t=el('textarea',{}); t.value=text; document.body.appendChild(t); t.select(); try{document.execCommand('copy')}catch(_){} t.remove(); }
+    cp.textContent = 'Copied ✓'; setTimeout(()=> cp.textContent='Copy address for Uber', 2200);
   });
-  nav.innerHTML = html;
-  nav.querySelectorAll("button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const t = btn.dataset.target;
-      if(t === "overview"){ selectOverview(); }
-      else { selectDay(parseInt(t)); }
+  body.appendChild(cp);
+  box.appendChild(body);
+  return box;
+}
+
+/* ---------------- days ---------------- */
+const DAYS = [
+  { n:1, kicker:'Arrival Day', cls:'', title:'Welcome to Bogotá ✈️', short:'Land, ride in, settle, dinner',
+    note:'Landing day. Keep it easy: it’s a long travel day, and you’re at altitude.',
+    plan:['Land, immigration and baggage','Ride to Alma 72 and check in','Dinner'],
+    tips:[ 'Immigration can be slow. Have your passports, the Check-Mig confirmation and return-ticket details handy.',
+           'Get your data working before you leave the terminal, then text home when you land and when you reach the apartment.',
+           'Ride: the Uber pickup zone shown in the app, or the official taxi counter inside arrivals (prepaid voucher). Wait for the car with the matching plate, and skip anyone who approaches you.',
+           'Bogotá sits at 2,640 m (8,660 ft). Water, a light dinner, no big climbs today.',
+           'Eat close to the apartment and be back before dark (the sun sets around 6 PM, with little twilight). Delivery is fine too.' ],
+    groups:[] },
+  { n:2, kicker:'Day 2 · Friday', cls:'', title:'Markets & a mountaintop ⛰️', short:'La Concordia, food tour, Monserrate',
+    note:'Your plan is set. A few notes to make it smooth.',
+    plan:['Breakfast at a café near the apartment','La Concordia market &amp; gallery','Gastronomy tour for lunch','Monserrate','Dinner, then back to Alma 72'],
+    tips:[ 'La Concordia is in La Candelaria: ride door-to-door, keep phones tucked away, and stay in daylight.',
+           'Monserrate: take the funicular or cable car up and down. Go up mid-afternoon and head down well before the sun sets around 6 PM. It’s about 3,152 m and chilly up top, so bring a layer and go slowly.',
+           'Order your ride from the station and wait inside until it arrives.',
+           'Pick dinner close to the apartment so you’re home early.' ],
+    groups:[ {title:'On today’s plan', ids:['concordia','monserrate']} ] },
+  { n:3, kicker:'Day 3 · Saturday · Open', cls:'open', title:'Pick your adventure 🗺️', short:'Downtown museums or a salt cathedral',
+    note:'Nothing booked yet, so mix and match.',
+    plan:[],
+    tips:[ 'Option A is a culture morning downtown (Gold Museum, Botero, lunch at La Puerta Falsa), back to the apartment by mid-afternoon.',
+           'Option B is a half- or full-day trip to the Salt Cathedral in Zipaquirá.',
+           'Either way: early dinner near the apartment, home before dark.' ],
+    groups:[ {title:'Option A · downtown culture', ids:['gold','botero','puerta']},
+             {title:'Option B · day trip', ids:['zipa']},
+             {title:'Fun extras', ids:['paloquemao','street']} ] },
+  { n:4, kicker:'Day 4 · Sunday · Open', cls:'open', title:'Ciclovía Sunday 🚲', short:'Streets close to cars, Usaquén market',
+    note:'Sunday is Bogotá at its best: the main roads become a giant park.',
+    plan:[],
+    tips:[ 'Ciclovía runs 7 AM to 2 PM. Walk, rent bikes, or just people-watch.',
+           'Afterward, Usaquén for the Sunday flea market and lunch.',
+           'The Gold Museum is free on Sundays (busy, so book ahead).',
+           'Exit Check-Mig: it opens 72 hours before your flight, so do it today or tomorrow morning. It’s free, and only on the official Migración Colombia site.' ],
+    groups:[ {title:'Ideas for today', ids:['ciclovia','usaquen','jardin']} ] },
+  { n:5, kicker:'Departure Day · Monday', cls:'travel', title:'One more day 🌙', short:'Easy day, then the airport',
+    note:'Monday is a public holiday, and with a late-night flight you have the whole day.',
+    plan:['Pack and check out','Evening: airport and flight home'],
+    tips:[ 'Holiday = many shops and markets close or shorten hours. The Gold Museum is closed on Mondays. The Ciclovía runs again (7 AM to 2 PM).',
+           'Ask your host about late check-out or luggage storage so you’re not dragging bags around.',
+           'Easy plan: a slow café breakfast, a Ciclovía stroll or Usaquén, souvenir coffee, an early dinner near the apartment, then rest.',
+           'Leave for the airport 3+ hours before your flight, plus extra for holiday-weekend traffic returning to the city. Ride together, door-to-door.',
+           'Text home when you leave, at the airport, when you board, and when you land.' ],
+    groups:[ {title:'Souvenirs', ids:['coffee']} ] }
+];
+
+/* ---------------- render: pills / overview / day ---------------- */
+function buildPills(){
+  const nav = $('#pills'); nav.textContent = '';
+  const mk = (label, key) => { const b = el('button', {type:'button', 'data-k':key, text:label}); b.addEventListener('click', ()=> selectView(key)); nav.appendChild(b); };
+  mk('Overview', 'o'); DAYS.forEach(d => mk('Day ' + d.n, String(d.n)));
+}
+function setPill(key){
+  $$('#pills button').forEach(b => b.classList.toggle('on', b.dataset.k === key));
+  const on = $('#pills button.on'); if(on && on.scrollIntoView) on.scrollIntoView({inline:'center', block:'nearest'});
+}
+function renderOverview(){
+  const m = $('#tripMain'); m.textContent = '';
+  m.appendChild(el('h2', {class:'h', text:'🗓️ Your week at a glance'}));
+  const tl = el('div', {class:'tl'});
+  DAYS.forEach((d,i)=>{
+    const it = el('div', {class:'tli c'+(i%3)}, [
+      el('div', {class:'d', text:d.kicker}),
+      el('div', {class:'t', text:d.title}),
+      el('div', {class:'s', text:d.short})
+    ]);
+    it.addEventListener('click', ()=> selectView(String(d.n)));
+    tl.appendChild(it);
+  });
+  m.appendChild(tl);
+  m.appendChild(stayCard(true));
+
+  m.appendChild(el('h2', {class:'h', text:'🚗 Getting around'}));
+  const g = el('div', {class:'card'}); g.innerHTML =
+    '<ul>'+
+    '<li><b>Uber is the default</b> (works with your US card). Lyft doesn’t operate in Colombia; DiDi and Cabify are backups.</li>'+
+    '<li>Before you get in, match the <b>plate, car and driver</b> to the app, and share your trip with a parent.</li>'+
+    '<li>Wait <b>inside</b> until the car is at the door, and ride together.</li>'+
+    '<li>Uber’s legal status in Colombia is a gray area, so a driver may ask you to sit in front or keep quiet about the app. That’s about their risk, not yours. If the driver is pushy or it feels off, cancel and re-order.</li>'+
+    '<li>No street-hailed taxis. Skip TransMilenio and public buses on this trip.</li>'+
+    '<li>Walking is for short, daytime hops on main streets.</li>'+
+    '<li>Traffic is heavy: add 30–45 minutes to anything time-sensitive.</li></ul>';
+  m.appendChild(g);
+
+  m.appendChild(el('h2', {class:'h', text:'💬 Check in with home'}));
+  const c = el('div', {class:'card'}); c.innerHTML =
+    '<p>Text home when you:</p><ul><li>land in Bogotá, and when you reach the apartment</li><li>start each day (the plan) and end each day (“we’re safe”)</li><li>leave for the airport, board, and land back home</li></ul>'+
+    '<p class="small">Texts are free; regular calls cost extra, so call over WhatsApp.</p>';
+  m.appendChild(c);
+
+  m.appendChild(el('h2', {class:'h', text:'☀️ Good to know'}));
+  const k = el('div', {class:'card'}); k.innerHTML =
+    '<ul><li><b>Weather:</b> cool mornings, and afternoon rain can show up fast. Layers and a light rain jacket, plus sunscreen (strong sun at altitude).</li>'+
+    '<li><b>Money:</b> Colombian pesos. Cards work in most places; carry some small bills. A 10% tip is customary and voluntary, so ask if it’s already on the bill.</li>'+
+    '<li><b>Language:</b> less English than you might expect. A translation app and the phrases on the Help tab go a long way.</li></ul>';
+  m.appendChild(k);
+  m.appendChild(el('div', {class:'card small', text:'📲 Make it an app icon: in Safari tap Share → Add to Home Screen. After one visit it also works offline.'}));
+}
+function renderDay(n){
+  const d = DAYS.find(x => x.n === n), i = n-1, m = $('#tripMain'); m.textContent = '';
+  const head = el('div', {class:'dayhead'});
+  head.appendChild(el('span', {class:'kicker ' + d.cls, text:d.kicker}));
+  head.appendChild(el('h2', {text:d.title}));
+  head.appendChild(el('div', {class:'note', text:d.note}));
+  m.appendChild(head);
+  m.appendChild(stayCard(false));
+  if(d.plan.length){
+    m.appendChild(el('h2', {class:'h', text:'📋 The plan'}));
+    const c = el('div', {class:'card plan'}); const ul = el('ul'); d.plan.forEach(t => { const li = el('li'); li.innerHTML = t; ul.appendChild(li); }); c.appendChild(ul); m.appendChild(c);
+  }
+  if(d.tips.length){
+    const t = el('div', {class:'tip'}); t.appendChild(el('b', {class:'t', text:'💡 Good to know'}));
+    const ul = el('ul'); d.tips.forEach(x => ul.appendChild(el('li', {text:x}))); t.appendChild(ul); m.appendChild(t);
+  }
+  d.groups.forEach(g => {
+    m.appendChild(el('div', {class:'opt', text:g.title}));
+    g.ids.forEach((id,j) => m.appendChild(placeCard(P[id], j+i)));
+  });
+}
+function selectView(key){
+  if(key === 'o') renderOverview(); else renderDay(parseInt(key,10));
+  setPill(key); store('bg_view', key); window.scrollTo(0,0);
+}
+
+/* ---------------- explore + help cards ---------------- */
+['concordia','puerta','paloquemao','usaquen','coffee'].forEach((id,i)=> $('#exFood').appendChild(placeCard(P[id], i)));
+['monserrate','gold','botero','nacional','ciclovia','zipa','street','jardin'].forEach((id,i)=> $('#exSights').appendChild(placeCard(P[id], i)));
+HOSP.forEach((h,i)=> $('#hospitals').appendChild(placeCard(h, i)));
+
+/* ---------------- tabs ---------------- */
+function show(tab){
+  ['trip','explore','help'].forEach(t=>{
+    $('#tab-'+t).hidden = (t!==tab);
+    const b = $('#btn-'+t); b.classList.toggle('on', t===tab); b.setAttribute('aria-selected', t===tab);
+  });
+  store('bg_tab', tab); window.scrollTo(0,0);
+}
+$$('nav.tabs button').forEach(b => b.addEventListener('click', ()=> show(b.dataset.tab)));
+buildPills();
+selectView(['o','1','2','3','4','5'].includes(store('bg_view')) ? store('bg_view') : 'o');
+show(['trip','explore','help'].includes(store('bg_tab')) ? store('bg_tab') : 'trip');
+
+/* ---------------- locked contacts ---------------- */
+const ENC = {"v":1,"iter":250000,"salt":"Tc0jfWxcmCeBLAOgbz8i2Q==","iv":"8qozpEivwFZ/hdYK","ct":"aEgp5dAvTAX5frv4XKFiGrmT/9uQZof5uCuwMnOeoMHiKlxFwyzy6jt0d+Uqc34OZ8M/NP10KCfLPTros1eDMum9gut+62H1cxqD2CRvddoXuR/zDQJ7UiuxL+QKjPd5hxdhFXtKZdnKOBHd83ZypXwEMVZLLq6ZjJzxlmhReRl905LBlanbQQn2QTErkzX16fHBiDQOlysu9WO5uS25GRS8wjLiYZUBKqqHMnWth/Kbg6PbY+0q8lVUFdK03Z0Tpv1EyZm50iX4JhmWHbHBXH73S3ns/+c+0XLgtuSzp0LhLhY18pRoqZd67mayCts8OShknLaV2lkOGqto2L1eDYbmX70VLyEzZ+3tpdh39QybuYZuowRI/X+bDVGvVqRw8Hx3blrD9sUBXPGDL8eBCVVp13R3ElSn7xA/44PJYIPlVbF9KrgWYBL1CUlGzg20xJiRAizhZKtVdRTgC5hJ/NkGw3mU0CeZ96xbD/E5jT/acOQoCZx55HGhOm4ExL9mpnqlUHbMrSrt2KKEJHhsCnQrvrBqMbeRdq0DMZIW/x0sQ83wRKy7l6DBvaaVhnTI6yCsBm6rmQPt9Ut3pvRDSV9wNmvuzSTjDkDmuUHLvowzuO71M3E6b6HG6ehB/x4i957D1Co+g87Rlp73F3uFwfJcnSI6e4Sxgnmiq1g="};
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function decryptContacts(pass){
+  if(!(window.crypto && crypto.subtle)) throw new Error('nocrypto');
+  const norm = pass.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(norm), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64(ENC.salt), iterations:ENC.iter, hash:'SHA-256'},
+    km, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64(ENC.iv)}, key, b64(ENC.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+function contactRow(c, removable){
+  const digits = String(c.tel).replace(/[^0-9]/g, '');
+  const row = el('div', {class:'ct'});
+  row.appendChild(el('div', {class:'nm', text:c.name}));
+  row.appendChild(el('div', {class:'nt', text:(c.note ? c.note + ' · ' : '') + '+' + digits}));
+  const btns = el('div', {class:'btnrow'});
+  btns.appendChild(el('a', {class:'btn fill', href:'tel:+'+digits, text:'Call'}));
+  btns.appendChild(el('a', {class:'btn wa', href:'https://wa.me/'+digits, target:'_blank', rel:'noopener', text:'WhatsApp'}));
+  if(removable){
+    const rm = el('button', {class:'btn', type:'button', text:'Remove'});
+    rm.addEventListener('click', ()=>{
+      const list = JSON.parse(store('bg_custom') || '[]').filter(x => !(x.name===c.name && x.tel===c.tel));
+      store('bg_custom', JSON.stringify(list)); renderContacts();
     });
-  });
+    btns.appendChild(rm);
+  }
+  row.appendChild(btns);
+  return row;
 }
-
-function setActiveButton(target){
-  document.querySelectorAll("#dayNav button").forEach(b => {
-    b.classList.toggle("active", b.dataset.target == target);
-  });
+function renderContacts(){
+  const raw = store('bg_unlocked'), open = !!raw;
+  $('#lockedView').hidden = open; $('#openView').hidden = !open;
+  if(!open) return;
+  const data = JSON.parse(raw), box = $('#ctList'); box.textContent = '';
+  data.groups.forEach(g => { box.appendChild(el('div', {class:'grp', text:g.title})); g.items.forEach(c => box.appendChild(contactRow(c, false))); });
+  const custom = JSON.parse(store('bg_custom') || '[]');
+  if(custom.length){ box.appendChild(el('div', {class:'grp', text:'Added by you'})); custom.forEach(c => box.appendChild(contactRow(c, true))); }
 }
+$('#unlockBtn').addEventListener('click', async ()=>{
+  const err = $('#lockErr'), btn = $('#unlockBtn'); err.textContent = '';
+  const pass = $('#pass').value.trim();
+  if(!pass){ err.textContent = 'Enter the passcode.'; return; }
+  btn.textContent = 'Unlocking…'; btn.disabled = true;
+  try{
+    const data = await decryptContacts(pass);
+    store('bg_unlocked', JSON.stringify(data)); $('#pass').value = ''; renderContacts();
+  }catch(e){
+    err.textContent = (e && e.message === 'nocrypto') ? 'Open this page from its https:// link (not a saved file) to unlock.' : 'That passcode didn’t work. Check it and try again.';
+  }
+  btn.textContent = 'Unlock contacts'; btn.disabled = false;
+});
+$('#pass').addEventListener('keydown', e => { if(e.key === 'Enter') $('#unlockBtn').click(); });
+$('#addBtn').addEventListener('click', ()=>{
+  const name = $('#addName').value.trim(), tel = $('#addTel').value.trim();
+  if(!name || tel.replace(/[^0-9]/g,'').length < 7) return;
+  const list = JSON.parse(store('bg_custom') || '[]'); list.push({name, tel, note:''}); store('bg_custom', JSON.stringify(list));
+  $('#addName').value = ''; $('#addTel').value = ''; renderContacts();
+});
+$('#forgetBtn').addEventListener('click', ()=>{ store('bg_unlocked', null); store('bg_custom', null); renderContacts(); });
+renderContacts();
 
-function selectDay(n){
-  const d = DAYS.find(x => x.num === n);
-  renderDay(d);
-  setActiveButton(n);
-  window.scrollTo({top:0, behavior:"instant"});
-}
-
-function selectOverview(){
-  renderOverview();
-  setActiveButton("overview");
-  window.scrollTo({top:0, behavior:"instant"});
-}
-
-buildNav();
-selectOverview();
+/* ---------------- offline support ---------------- */
+if('serviceWorker' in navigator && location.protocol.indexOf('http') === 0){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 </script>
 </body>
 </html>
